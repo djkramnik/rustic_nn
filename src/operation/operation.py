@@ -36,7 +36,7 @@ class ParamOperation(Operation):
     self.input_grad = self._input_grad(output_grad)
     self.param_grad = self._param_grad(output_grad)
     assert_shape(self.param, self.param_grad)
-    assert_shape(self.input_grad, self.input_)
+    assert_shape(self.input_, self.input_grad)
 
     return self.input_grad # why?
   def _param_grad(self, output_grad:  ndarray) -> ndarray:
