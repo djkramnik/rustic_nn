@@ -1,6 +1,5 @@
 import numpy as np
 from util.customtypes import *
-from util.assert_shape import assert_shape
 from operation.operation import ParamOperation
 
 class BiasAdd(ParamOperation):
