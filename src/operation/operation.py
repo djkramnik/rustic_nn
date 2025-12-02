@@ -3,7 +3,7 @@ from util.assert_shape import *
 
 class Operation(object):
   '''
-  Base class for an opereation in a neural network
+  Base class for an operation in a neural network
   '''
   def __init__(self):
     pass
