@@ -6,6 +6,7 @@ from operation.bias_add import BiasAdd
 from util.customtypes import *
 from typing import Type
 import numpy as np
+import numbers
 
 class Dense(Layer):
   '''
@@ -16,9 +17,9 @@ class Dense(Layer):
     self.activation = activation()
 
   def _setup_layer(self, input_: ndarray):
-    # thank you benefactor
-    if (self.seed):
-      np.random.seed(self.seed)
+    # thank you benefactor?
+    if hasattr(self, "seed") and isinstance(self.seed, numbers.Integral):
+      np.random.seed(int(self.seed))
 
     # this will get wiped out by calling _params
     self.params = []
