@@ -23,6 +23,7 @@ class Trainer(object):
     self.net = net
     self.optim = optim
     setattr(self.optim, 'net', self.net)
+    self.best_loss = 1e9
 
   def generate_batches(self, X: ndarray, y: ndarray, size: int=32) -> Iterator[tuple[ndarray, ndarray]]:
     '''
