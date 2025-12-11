@@ -12,9 +12,9 @@ class Dense(Layer):
   '''
   A fully connected layer that inherits from Layer
   '''
-  def __init__(self, neurons: int, activation: Type[Operation] = Sigmoid):
+  def __init__(self, neurons: int, activation: Operation = Sigmoid()):
     super().__init__(neurons)
-    self.activation = activation()
+    self.activation = activation
 
   def _setup_layer(self, input_: ndarray):
     # thank you benefactor?

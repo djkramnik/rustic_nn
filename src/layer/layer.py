@@ -40,13 +40,13 @@ class Layer(object):
     self._param_grads()
     return output_grad
 
-  def _param_grads(self) -> ndarray:
+  def _param_grads(self):
     self.param_grads = []
     for op in self.operations:
       if (has_ndarray(op, 'param_grad')):
         self.param_grads.append(op.param_grad)
 
-  def _params(self) -> ndarray:
+  def _params(self):
     self.params = []
     for op in self.operations:
       if (has_ndarray(op, 'param')):

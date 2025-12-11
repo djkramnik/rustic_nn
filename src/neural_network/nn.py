@@ -3,7 +3,7 @@ from loss.loss import Loss
 from util.customtypes import *
 
 class NeuralNetwork(object):
-  def __init__(self, layers: List[Layer], loss: Loss, seed: int = 1):
+  def __init__(self, layers: list[Layer], loss: Loss, seed: int = 1):
     self.layers = layers
     self.loss = loss
     self.seed = seed
@@ -22,7 +22,7 @@ class NeuralNetwork(object):
     for layer in reversed(self.layers):
       grad = layer.backward(grad)
 
-  def train_batch(self, x_batch: ndarray, y_batch: ndarray) -> float:
+  def train_batch(self, x_batch: ndarray, y_batch: ndarray) -> ndarray:
     '''
     Passes data forward through the layers,
     computes the loss,

@@ -1,10 +1,11 @@
 import pandas as pd
 import numpy as np
 import os
+from util.customtypes import *
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
-def load_boston():
+def load_boston() -> tuple[ndarray, ndarray, list[str]]:
   current_dir = os.path.dirname(os.path.abspath(__file__))
   boston = pd.read_csv(os.path.join(current_dir, 'boston.txt'), sep="\s+", skiprows=22, header=None)
   data = np.hstack([boston.values[::2, :], boston.values[1::2, :2]])
@@ -25,7 +26,7 @@ def load_boston():
     'LSTAT',
     'MEDV'
   ]
-  return [data, target, features]
+  return data, target, features
 
 def bootstrap_boston(debug=False):
   [data, target, features] = load_boston()
@@ -43,4 +44,7 @@ def bootstrap_boston(debug=False):
   X_train, X_test, y_train, y_test = train_test_split(
     data, target, test_size=0.3, random_state=80718)
   y_train, y_test = y_train.reshape(-1, 1), y_test.reshape(-1, 1)
-  return X_train, X_test, y_train, y_test
+  return {
+    "data": (X_train, y_train, X_test, y_test),
+    "features": features
+  }

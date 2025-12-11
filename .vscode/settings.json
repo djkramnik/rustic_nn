@@ -1,0 +1,28 @@
+{
+  "python.analysis.typeCheckingMode": "off",
+
+  "python.analysis.diagnosticSeverityOverrides": {
+    // Keep these as real errors
+    "reportGeneralTypeIssues": "error",
+    "reportMissingImports": "error",
+    "reportUndefinedVariable": "error",
+    "reportOptionalMemberAccess": "error",
+    "reportOptionalCall": "error",
+
+    // Kill most type-system nagging
+    "reportMissingTypeArgument": "none",
+    "reportUnknownVariableType": "none",
+    "reportUnknownArgumentType": "none",
+    "reportUnknownMemberType": "none",
+    "reportUnknownParameterType": "none",
+    "reportUnknownLambdaType": "none",
+    "reportUnknownArgumentTypeForCall": "none",
+    "reportUnknownVariableTypeFromLib": "none",
+
+    // Kill style-ish stuff
+    "reportUnusedImport": "none",
+    "reportUnusedVariable": "none",
+    "reportPrivateImportUsage": "none",
+    "reportImportCycles": "none"
+  }
+}

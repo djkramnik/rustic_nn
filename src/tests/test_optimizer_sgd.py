@@ -1,10 +1,11 @@
 import numpy as np
 from optimizer.sgd import SGD
 from neural_network.nn import NeuralNetwork
+from layer.layer import Layer
 from loss.loss import Loss
 
 def test_sgd_step():
-  class MockLayer:
+  class MockLayer(Layer):
     def __init__(self, params, param_grads):
       self.params = params
       self.param_grads = param_grads
