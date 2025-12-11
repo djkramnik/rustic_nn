@@ -71,6 +71,8 @@ def eval_regression_model(model: NeuralNetwork,
     print()
     print("Root mean squared error {:.2f}".format(rmse(preds, y_test)))
 
+# linear regression eval
+
 trainer = Trainer(lr, SGD(lr=0.01))
 
 trainer.fit(X_train, y_train, X_test, y_test,
@@ -79,6 +81,28 @@ trainer.fit(X_train, y_train, X_test, y_test,
        seed=seed)
 print()
 eval_regression_model(lr, X_test, y_test)
+
+# non deep learning
+
+trainer = Trainer(nn, SGD(lr=0.01))
+
+trainer.fit(X_train, y_train, X_test, y_test,
+       epochs = 50,
+       eval_every = 10,
+       seed=seed)
+print()
+eval_regression_model(nn, X_test, y_test)
+
+# deep learning
+
+trainer = Trainer(dl, SGD(lr=0.01))
+
+trainer.fit(X_train, y_train, X_test, y_test,
+       epochs = 50,
+       eval_every = 10,
+       seed=seed)
+print()
+eval_regression_model(dl, X_test, y_test)
 
 
 
