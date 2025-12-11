@@ -2,6 +2,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from util.customtypes import *
 
+def plot_loss_curve(train_losses: list[float], val_losses: list[float], title: str = ""):
+  epochs = np.arange(1, len(train_losses) + 1)
+  plt.figure(figsize=(6,4))
+  plt.plot(epochs, train_losses, label="train")
+  plt.plot(epochs, val_losses, label="val")
+  plt.xlabel("epoch")
+  plt.ylabel("loss")
+  plt.title(title)
+  plt.legend()
+  plt.tight_layout()
+  plt.show()
+
+
 def plot_regression_diagnostics(y_true: ndarray, y_pred:  ndarray, model_name: str=""):
   '''
   Quick visual check of regression performance

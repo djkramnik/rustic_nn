@@ -7,7 +7,7 @@ from operation.activation import Linear, Sigmoid
 from neural_network.nn import NeuralNetwork
 from loss.mse import MeanSquaredError
 from optimizer.sgd import SGD
-from util.plot import plot_regression_diagnostics
+from util.plot import plot_loss_curve, plot_regression_diagnostics
 
 boston_data = bootstrap_boston()
 
@@ -79,15 +79,25 @@ def visualize_regression_model(model: NeuralNetwork, X_test, y_test, model_name=
 
 # linear regression eval
 
-trainer = Trainer(lr, SGD(lr=0.01))
+lr_train_losses: list[float] = []
+lr_val_losses: list[float] = []
+
+def store_losses(train_loss: float, val_loss: float, *args):
+    print("eval callback", train_loss, val_loss)
+    lr_train_losses.append(train_loss)
+    lr_val_losses.append(val_loss)
+
+trainer = Trainer(lr, SGD(lr=0.01), eval_callback=store_losses)
 
 trainer.fit(X_train, y_train, X_test, y_test,
        epochs = 50,
        eval_every = 10,
-       seed=seed)
+       seed=seed,
+       )
 print()
 eval_regression_model(lr, X_test, y_test)
 visualize_regression_model(lr, X_test, y_test, "linear regression")
+plot_loss_curve(lr_train_losses, lr_val_losses, "linear regression loss")
 
 # non deep learning
 
