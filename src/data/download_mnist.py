@@ -5,7 +5,7 @@ from torchvision import datasets
 # Directory structure:
 # <this_file>/../data/mnist/
 MODULE_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "data", "mnist")
+    os.path.join(os.path.dirname(__file__), "mnist")
 )
 
 def download_mnist():
@@ -37,20 +37,6 @@ def download_mnist():
         pickle.dump(mnist, f)
 
     print(f"MNIST saved to {pkl_path}")
-
-
-def load():
-    pkl_path = os.path.join(MODULE_DIR, "mnist.pkl")
-    with open(pkl_path, "rb") as f:
-        mnist = pickle.load(f)
-
-    return (
-        mnist["training_images"],
-        mnist["training_labels"],
-        mnist["test_images"],
-        mnist["test_labels"],
-    )
-
 
 if __name__ == "__main__":
     download_mnist()
