@@ -22,6 +22,3 @@ class SoftmaxCrossEntropy(Loss):
 
   def _input_grad(self) -> np.ndarray:
     return (self.softmax_preds - self.target) / self.prediction.shape[0]
-
-
-
