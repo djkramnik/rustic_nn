@@ -58,7 +58,7 @@ def test_dense_forward_and_backward_call_order(monkeypatch):
     Dense = dense_module.Dense
 
     # Instantiate a Dense layer with our fake activation class
-    layer = Dense(neurons=3, activation=FakeActivation)
+    layer = Dense(neurons=3, activation=FakeActivation())
 
     x = np.ones((2, 4), dtype=float)
 
