@@ -10,6 +10,7 @@ from loss.mse import MeanSquaredError
 from loss.softmax_cross_entropy import SoftmaxCrossEntropy
 from trainer.trainer import Trainer
 from optimizer.sgd import SGD
+from optimizer.sgd_momentum import SGDMomentum
 
 X_train, y_train, X_test, y_test = load()
 
@@ -24,50 +25,134 @@ X_train, X_test = scale_train_data(X_train, X_test)
 
 sacred_seed = 190119
 
+
+# MSE vs Softmax CE
+
+# model = NeuralNetwork(
+#   layers=[
+#     Dense(neurons=89, activation=Sigmoid()),
+#     Dense(neurons=10, activation=Sigmoid())
+#   ],
+#   loss = MeanSquaredError(),
+#   seed=sacred_seed
+# )
+
+# trainer = Trainer(model, SGD(0.1))
+# trainer.fit(
+#   X_train,
+#   y_train_encoded,
+#   X_test,
+#   y_test_encoded,
+#   epochs=50,
+#   eval_every=5,
+#   seed=sacred_seed, # this is redundant I think either here or there
+#   batch_size=60,
+# )
+
+# calc_accuracy_model(model, X_test, y_test)
+
+# # now try with softmax cross entropy loss
+
+# model = NeuralNetwork(
+#   layers=[
+#     Dense(neurons=89, activation=Sigmoid()),
+#     Dense(neurons=10, activation=Linear())
+#   ],
+#   loss = SoftmaxCrossEntropy(),
+#   seed=sacred_seed
+# )
+
+# trainer = Trainer(model, SGD(0.1))
+# trainer.fit(
+#   X_train,
+#   y_train_encoded,
+#   X_test,
+#   y_test_encoded,
+#   epochs=50,
+#   eval_every=5,
+#   seed=sacred_seed, # this is redundant I think either here or there
+#   batch_size=60,
+# )
+
+# calc_accuracy_model(model, X_test, y_test)
+
+# with momentum
+
+# model = NeuralNetwork(
+#     layers=[
+#         Dense(neurons=89, activation=Sigmoid()),
+#         Dense(neurons=10, activation=Linear()),
+#     ],
+#     loss=SoftmaxCrossEntropy(),
+#     seed=sacred_seed,
+# )
+
+# optim = SGDMomentum(0.1, momentum=0.9)
+
+# trainer = Trainer(model, optim)
+# trainer.fit(
+#     X_train,
+#     y_train_encoded,
+#     X_test,
+#     y_test_encoded,
+#     epochs=50,
+#     eval_every=5,
+#     seed=sacred_seed,
+#     batch_size=60,
+# )
+
+# calc_accuracy_model(model, X_test, y_test)
+
+# With Learning rate Decay (linear)
+
 model = NeuralNetwork(
-  layers=[
-    Dense(neurons=89, activation=Sigmoid()),
-    Dense(neurons=10, activation=Sigmoid())
-  ],
-  loss = MeanSquaredError(),
-  seed=sacred_seed
+    layers=[
+        Dense(neurons=89, activation=Sigmoid()),
+        Dense(neurons=10, activation=Linear()),
+    ],
+    loss=SoftmaxCrossEntropy(),
+    seed=sacred_seed,
 )
 
-trainer = Trainer(model, SGD(0.1))
+optim = SGDMomentum(0.1, final_lr=0.05, momentum=0.9, decay_type='linear')
+
+trainer = Trainer(model, optim)
 trainer.fit(
-  X_train,
-  y_train_encoded,
-  X_test,
-  y_test_encoded,
-  epochs=50,
-  eval_every=5,
-  seed=sacred_seed, # this is redundant I think either here or there
-  batch_size=60,
+    X_train,
+    y_train_encoded,
+    X_test,
+    y_test_encoded,
+    epochs=50,
+    eval_every=5,
+    seed=sacred_seed,
+    batch_size=60,
 )
 
 calc_accuracy_model(model, X_test, y_test)
 
-# now try with softmax cross entropy loss
+# With Learning rate Decay (exponential)
 
 model = NeuralNetwork(
-  layers=[
-    Dense(neurons=89, activation=Sigmoid()),
-    Dense(neurons=10, activation=Linear())
-  ],
-  loss = SoftmaxCrossEntropy(),
-  seed=sacred_seed
+    layers=[
+        Dense(neurons=89, activation=Sigmoid()),
+        Dense(neurons=10, activation=Linear()),
+    ],
+    loss=SoftmaxCrossEntropy(),
+    seed=sacred_seed,
 )
 
-trainer = Trainer(model, SGD(0.1))
+optim = SGDMomentum(0.1, final_lr=0.05, momentum=0.9, decay_type='exponential')
+
+trainer = Trainer(model, optim)
 trainer.fit(
-  X_train,
-  y_train_encoded,
-  X_test,
-  y_test_encoded,
-  epochs=50,
-  eval_every=5,
-  seed=sacred_seed, # this is redundant I think either here or there
-  batch_size=60,
+    X_train,
+    y_train_encoded,
+    X_test,
+    y_test_encoded,
+    epochs=50,
+    eval_every=5,
+    seed=sacred_seed,
+    batch_size=60,
 )
 
 calc_accuracy_model(model, X_test, y_test)

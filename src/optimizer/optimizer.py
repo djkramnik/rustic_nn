@@ -18,6 +18,16 @@ class Optimizer(object):
     elif self.decay_type == "linear":
       self.decay_per_epoch = (self.lr - self.final_lr) / (self.max_epochs - 1)
 
+  def _decay_lr(self) -> None:
+    if not self.decay_type:
+        return
+
+    if self.decay_type == "exponential":
+        self.lr *= self.decay_per_epoch
+
+    elif self.decay_type == "linear":
+        self.lr -= self.decay_per_epoch
+
   def step(self) -> None:
     for param, param_grad in zip(self.net.params(), self.net.param_grads()):
       self._update_rule(param=param, grad=param_grad)

@@ -24,7 +24,7 @@ class SGDMomentum(Optimizer):
 
   def _update_rule(self, **kwargs) -> None:
 
-      # Update velocity
+      # Update velocity.  mutated in place.  keep in mind this is only the item within velocities pertaining to these params
       kwargs["velocity"] *= self.momentum
       kwargs["velocity"] += self.lr * kwargs["grad"]
 
