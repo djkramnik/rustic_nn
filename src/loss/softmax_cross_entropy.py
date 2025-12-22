@@ -1,6 +1,6 @@
 import numpy as np
 from loss.loss import Loss
-from util.np_utils import normalize, unnormalize, softmax
+from util.np_utils import softmax
 
 class SoftmaxCrossEntropy(Loss):
   def __init__(self, eps:float = 1e-9):
