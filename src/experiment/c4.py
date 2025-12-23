@@ -132,30 +132,30 @@ sacred_seed = 190119
 
 # With Learning rate Decay (exponential)
 
-model = NeuralNetwork(
-    layers=[
-        Dense(neurons=89, activation=Sigmoid()),
-        Dense(neurons=10, activation=Linear()),
-    ],
-    loss=SoftmaxCrossEntropy(),
-    seed=sacred_seed,
-)
+# model = NeuralNetwork(
+#     layers=[
+#         Dense(neurons=89, activation=Sigmoid()),
+#         Dense(neurons=10, activation=Linear()),
+#     ],
+#     loss=SoftmaxCrossEntropy(),
+#     seed=sacred_seed,
+# )
 
-optim = SGDMomentum(0.1, final_lr=0.05, momentum=0.9, decay_type='exponential')
+# optim = SGDMomentum(0.1, final_lr=0.05, momentum=0.9, decay_type='exponential')
 
-trainer = Trainer(model, optim)
-trainer.fit(
-    X_train,
-    y_train_encoded,
-    X_test,
-    y_test_encoded,
-    epochs=50,
-    eval_every=5,
-    seed=sacred_seed,
-    batch_size=60,
-)
+# trainer = Trainer(model, optim)
+# trainer.fit(
+#     X_train,
+#     y_train_encoded,
+#     X_test,
+#     y_test_encoded,
+#     epochs=50,
+#     eval_every=5,
+#     seed=sacred_seed,
+#     batch_size=60,
+# )
 
-calc_accuracy_model(model, X_test, y_test)
+# calc_accuracy_model(model, X_test, y_test)
 
 model = NeuralNetwork(
     layers=[
