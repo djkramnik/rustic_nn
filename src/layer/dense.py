@@ -12,8 +12,13 @@ class Dense(Layer):
   '''
   A fully connected layer that inherits from Layer
   '''
-  def __init__(self, neurons: int, activation: Operation = Sigmoid()):
+  def __init__(self,
+      neurons: int,
+      activation: Operation = Sigmoid(),
+      weight_init: str = None
+    ):
     super().__init__(neurons)
+    self.weight_init = weight_init
     self.activation = activation
 
   def _setup_layer(self, input_: ndarray):
@@ -26,16 +31,25 @@ class Dense(Layer):
 
     # matmul weight param is (#features, hidden_size)
     # should we not normalize the weights?
-    self.params.append(
-      np.random.randn(input_.shape[1], self.neurons)
-    )
-    # bias param
+
+    fan_in = input_.shape[1]
+
+    # weight initialization.  right now just glorot or nothing
+    scale = 1 if self.weight_init != 'glorot' else np.sqrt(2 / (fan_in + self.neurons))
+
+    weights = np.random.randn(fan_in, self.neurons) * scale
     # bias weights are (1, hidden_size)
-    self.params.append(np.random.randn(1, self.neurons))
+    # bias = np.random.randn(1, self.neurons) * scale
+
+    # test setting bias to zero
+    bias = np.zeros((1, self.neurons))
+
+    self.params.append(weights)
+    self.params.append(bias)
 
     self.operations = [
-      WeightMultiply(self.params[0]),
-      BiasAdd(self.params[1]),
+      WeightMultiply(weights),
+      BiasAdd(bias),
       self.activation
     ]
 

@@ -105,6 +105,33 @@ sacred_seed = 190119
 
 # With Learning rate Decay (linear)
 
+# model = NeuralNetwork(
+#     layers=[
+#         Dense(neurons=89, activation=Sigmoid()),
+#         Dense(neurons=10, activation=Linear()),
+#     ],
+#     loss=SoftmaxCrossEntropy(),
+#     seed=sacred_seed,
+# )
+
+# optim = SGDMomentum(0.1, final_lr=0.05, momentum=0.9, decay_type='linear')
+
+# trainer = Trainer(model, optim)
+# trainer.fit(
+#     X_train,
+#     y_train_encoded,
+#     X_test,
+#     y_test_encoded,
+#     epochs=50,
+#     eval_every=5,
+#     seed=sacred_seed,
+#     batch_size=60,
+# )
+
+# calc_accuracy_model(model, X_test, y_test)
+
+# With Learning rate Decay (exponential)
+
 model = NeuralNetwork(
     layers=[
         Dense(neurons=89, activation=Sigmoid()),
@@ -114,7 +141,7 @@ model = NeuralNetwork(
     seed=sacred_seed,
 )
 
-optim = SGDMomentum(0.1, final_lr=0.05, momentum=0.9, decay_type='linear')
+optim = SGDMomentum(0.1, final_lr=0.05, momentum=0.9, decay_type='exponential')
 
 trainer = Trainer(model, optim)
 trainer.fit(
@@ -130,12 +157,10 @@ trainer.fit(
 
 calc_accuracy_model(model, X_test, y_test)
 
-# With Learning rate Decay (exponential)
-
 model = NeuralNetwork(
     layers=[
-        Dense(neurons=89, activation=Sigmoid()),
-        Dense(neurons=10, activation=Linear()),
+        Dense(neurons=89, activation=Sigmoid(), weight_init='glorot'),
+        Dense(neurons=10, activation=Linear(), weight_init= 'glorot'),
     ],
     loss=SoftmaxCrossEntropy(),
     seed=sacred_seed,
