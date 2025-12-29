@@ -12,13 +12,13 @@ class Dropout(Operation):
     self.mask = None
 
   def forward(self, input_: ndarray, **kwargs):
-    self.inference = kwargs.get('inference', True) == False
-    return super().forward(input_)
+    self.inference = kwargs.get('inference', True)
+    return super().forward(input_, **kwargs)
 
   def _output(self) -> ndarray:
     if self.inference:
       # scale at inference time
-      return self._input * self.keep_prob
+      return self.input_ * self.keep_prob
     else:
       # not inference, mask
       self.mask = np.random.binomial(1, self.keep_prob, size=self.input_.shape)

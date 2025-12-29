@@ -5,7 +5,7 @@ from util.one_hot_encode import one_hot_encode
 from util.scale import scale_train_data
 from neural_network.nn import NeuralNetwork
 from layer.dense import Dense
-from operation.activation import Sigmoid, Linear
+from operation.activation import Sigmoid, Linear, Tanh
 from loss.mse import MeanSquaredError
 from loss.softmax_cross_entropy import SoftmaxCrossEntropy
 from trainer.trainer import Trainer
@@ -53,10 +53,36 @@ sacred_seed = 190119
 
 # # now try with softmax cross entropy loss
 
+# print('\nmodel with softmax cross entropy loss')
 # model = NeuralNetwork(
 #   layers=[
 #     Dense(neurons=89, activation=Sigmoid()),
 #     Dense(neurons=10, activation=Linear())
+#   ],
+#   loss = SoftmaxCrossEntropy(),
+#   seed=sacred_seed
+# )
+
+# trainer = Trainer(model, SGD(0.1))
+# trainer.fit(
+#   X_train,
+#   y_train_encoded,
+#   X_test,
+#   y_test_encoded,
+#   epochs=50,
+#   eval_every=5,
+#   seed=sacred_seed, # this is redundant I think either here or there
+#   batch_size=60,
+# )
+
+# calc_accuracy_model(model, X_test, y_test)
+
+# with dropout
+# print('\nmodel with dropout and softmax cross entropy loss')
+# model = NeuralNetwork(
+#   layers=[
+#     Dense(neurons=89, activation=Sigmoid(), dropout=0.8),
+#     Dense(neurons=10, activation=Linear(), dropout=0.8)
 #   ],
 #   loss = SoftmaxCrossEntropy(),
 #   seed=sacred_seed
@@ -157,10 +183,42 @@ sacred_seed = 190119
 
 # calc_accuracy_model(model, X_test, y_test)
 
+
+# With weight initialization
+
+# model = NeuralNetwork(
+#     layers=[
+#         Dense(neurons=256, activation=Sigmoid(), weight_init='glorot'),
+#         Dense(neurons=10, activation=Linear(), weight_init= 'glorot'),
+#     ],
+#     loss=SoftmaxCrossEntropy(),
+#     seed=sacred_seed,
+# )
+
+# optim = SGDMomentum(0.1, final_lr=0.05, momentum=0.9, decay_type='exponential')
+
+# trainer = Trainer(model, optim)
+# trainer.fit(
+#     X_train,
+#     y_train_encoded,
+#     X_test,
+#     y_test_encoded,
+#     epochs=50,
+#     eval_every=5,
+#     seed=sacred_seed,
+#     batch_size=60,
+# )
+
+# calc_accuracy_model(model, X_test, y_test)
+
+
+# Tanh experiment
+
+print('using tanh with no glorot')
 model = NeuralNetwork(
     layers=[
-        Dense(neurons=89, activation=Sigmoid(), weight_init='glorot'),
-        Dense(neurons=10, activation=Linear(), weight_init= 'glorot'),
+        Dense(neurons=256, activation=Tanh()),
+        Dense(neurons=10, activation=Linear()),
     ],
     loss=SoftmaxCrossEntropy(),
     seed=sacred_seed,
@@ -175,6 +233,33 @@ trainer.fit(
     X_test,
     y_test_encoded,
     epochs=50,
+    eval_every=5,
+    seed=sacred_seed,
+    batch_size=60,
+)
+
+calc_accuracy_model(model, X_test, y_test)
+
+# With dropout and tanh
+print('with dropout and tanh with no glorot')
+model = NeuralNetwork(
+    layers=[
+        Dense(neurons=256, activation=Tanh(), dropout=0.5),
+        Dense(neurons=10, activation=Linear(), dropout=0.5),
+    ],
+    loss=SoftmaxCrossEntropy(),
+    seed=sacred_seed,
+)
+
+optim = SGDMomentum(0.1, final_lr=0.05, momentum=0.9, decay_type='exponential')
+
+trainer = Trainer(model, optim)
+trainer.fit(
+    X_train,
+    y_train_encoded,
+    X_test,
+    y_test_encoded,
+    epochs=100,
     eval_every=5,
     seed=sacred_seed,
     batch_size=60,
