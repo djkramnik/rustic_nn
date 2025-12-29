@@ -19,7 +19,7 @@ class Layer(object):
   def _setup_layer(self, input_: ndarray):
     raise NotImplementedError()
 
-  def forward(self, input_: ndarray) -> ndarray:
+  def forward(self, input_: ndarray, **kwargs) -> ndarray:
     if (self.first):
       self._setup_layer(input_)
       self.first = False
@@ -28,7 +28,7 @@ class Layer(object):
     # the last input passed to forward
     self.input_ = input_
     for operation in self.operations:
-      input_ = operation.forward(input_)
+      input_ = operation.forward(input_, **kwargs)
     self.output = input_
     return self.output
 

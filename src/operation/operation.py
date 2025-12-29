@@ -7,7 +7,7 @@ class Operation(object):
   '''
   def __init__(self):
     pass
-  def forward(self, input_: ndarray):
+  def forward(self, input_: ndarray, **kwargs):
     self.input_ = input_
     self.output = self._output()
     return self.output
@@ -31,7 +31,7 @@ class ParamOperation(Operation):
   def __init__(self, param: ndarray):
     super().__init__()
     self.param = param
-  def backward(self, output_grad: ndarray):
+  def backward(self, output_grad: ndarray, **kwargs):
     assert_shape(self.output, output_grad)
     self.input_grad = self._input_grad(output_grad)
     self.param_grad = self._param_grad(output_grad)

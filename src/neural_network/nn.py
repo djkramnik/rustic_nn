@@ -11,10 +11,10 @@ class NeuralNetwork(object):
     for layer in self.layers:
       setattr(layer, 'seed', self.seed)
 
-  def forward(self, x_batch: ndarray) -> ndarray:
+  def forward(self, x_batch: ndarray, **kwargs) -> ndarray:
     x_out = x_batch
     for layer in self.layers:
-      x_out = layer.forward(x_out)
+      x_out = layer.forward(x_out, **kwargs)
     return x_out
 
   def backward(self, loss_grad: ndarray):
@@ -28,7 +28,7 @@ class NeuralNetwork(object):
     computes the loss,
     passes the loss_gradient back through the layers
     '''
-    preds = self.forward(x_batch)
+    preds = self.forward(x_batch, inference=False)
     # we don't technically need this? except perhaps
     # for logging / early stop?
     loss_value = self.loss.forward(preds, y_batch)

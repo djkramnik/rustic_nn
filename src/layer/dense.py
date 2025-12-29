@@ -3,6 +3,7 @@ from operation.activation import Sigmoid
 from operation.operation import Operation
 from operation.weightmultiply import WeightMultiply
 from operation.bias_add import BiasAdd
+from operation.dropout import Dropout
 from util.customtypes import *
 from typing import Type
 import numpy as np
@@ -15,11 +16,13 @@ class Dense(Layer):
   def __init__(self,
       neurons: int,
       activation: Operation = Sigmoid(),
-      weight_init: str = None
+      weight_init: str = None,
+      dropout: float | None = None
     ):
     super().__init__(neurons)
     self.weight_init = weight_init
     self.activation = activation
+    self.dropout = dropout
 
   def _setup_layer(self, input_: ndarray):
     # thank you benefactor?
@@ -52,5 +55,7 @@ class Dense(Layer):
       BiasAdd(bias),
       self.activation
     ]
+    if self.dropout is not None:
+      self.operations.append(Dropout(keep_prob=self.dropout))
 
 
