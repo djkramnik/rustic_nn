@@ -1,6 +1,6 @@
 import numpy as np
 
-def one_hot_encode(labels: np.ndarray, tot_labels: int):
+def one_hot_encode(labels: np.ndarray, tot_labels: int) -> np.ndarray:
   # this just has rows and no second dim
   assert(labels.ndim == 1)
   encoded = np.zeros((labels.shape[0], tot_labels))
@@ -19,7 +19,7 @@ def one_hot_encode(labels: np.ndarray, tot_labels: int):
 # mask[np.array([0, 1, 2]), toy_labels] = 1
 # print(mask)
 
-def one_hot_encode_fast(labels: np.ndarray, tot_labels: int):
+def one_hot_encode_fast(labels: np.ndarray, tot_labels: int) -> np.ndarray:
   assert(labels.ndim == 1)
 
   encoded = np.zeros((labels.shape[0], tot_labels))
