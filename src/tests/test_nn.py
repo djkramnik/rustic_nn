@@ -27,7 +27,7 @@ def test_neural_network_train_batch():
             self.params = []
             self.param_grads = []
 
-        def forward(self, x: np.ndarray) -> np.ndarray:
+        def forward(self, x: np.ndarray, **kwargs) -> np.ndarray:
             calls.append(("forward", self.name))
             self.last_forward_input = x
             # identity: output == input

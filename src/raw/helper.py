@@ -28,3 +28,11 @@ def one_hot_encode_fast(labels: np.ndarray, tot_labels: int) -> np.ndarray:
   return encoded
 
 
+def scale_input_data(train: np.ndarray, test: np.ndarray) -> list[np.ndarray, np.ndarray]:
+  mean = np.mean(train)
+  std = np.std(train)
+  return (train - mean) / std, (test - mean) / std
+
+def test_std(x: np.ndarray) -> np.ndarray:
+  mean = np.mean(x)
+  return np.sqrt(np.sum(np.power(x - mean, 2)) / x.shape[0])
