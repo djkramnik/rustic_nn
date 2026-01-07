@@ -33,6 +33,6 @@ def scale_input_data(train: np.ndarray, test: np.ndarray) -> list[np.ndarray, np
   std = np.std(train)
   return (train - mean) / std, (test - mean) / std
 
-def test_std(x: np.ndarray) -> np.ndarray:
+def brew_std(x: np.ndarray) -> np.ndarray:
   mean = np.mean(x)
   return np.sqrt(np.sum(np.power(x - mean, 2)) / x.shape[0])

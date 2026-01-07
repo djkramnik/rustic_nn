@@ -29,7 +29,7 @@ X_train, X_test = scale_input_data(X_train, X_test)
 
 # for some reason testing home brewed std impl
 # a = np.array([1, 2, 3, 100])
-# print('home brew ok?', np.allclose(np.std(a), test_std(a)))
+# print('home brew ok?', np.allclose(np.std(a), brew_std(a)))
 
 print(X_train.shape)
 
