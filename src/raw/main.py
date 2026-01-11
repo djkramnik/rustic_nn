@@ -7,29 +7,11 @@ import util.np_utils as utils
 
 X_train, y_train, X_test, y_test = load()
 
-# print('raw nn coding')
 
 y_test_encoded = one_hot_encode(y_test, 10)
-# print(y_test[0], y_test_encoded[0])
-
 y_train_encoded = one_hot_encode_fast(y_train, 10)
-# print(y_train[0], y_train_encoded[0])
-
-# now I need to scale the train data so that it has mean=0, variance = 1
-
-# print('pre scaling input')
-# print('mean', np.mean(X_train), np.mean(X_test))
-# print('var', np.var(X_train), np.var(X_test))
 
 X_train, X_test = scale_input_data(X_train, X_test)
-
-# print('post scaling input')
-# print('mean', np.mean(X_train), np.mean(X_test))
-# print('var', np.var(X_train), np.var(X_test))
-
-# for some reason testing home brewed std impl
-# a = np.array([1, 2, 3, 100])
-# print('home brew ok?', np.allclose(np.std(a), brew_std(a)))
 
 print(X_train.shape)
 
@@ -40,25 +22,6 @@ layer_one_bias = np.zeros((1, 89))
 layer_two_weights = np.random.randn(89, 10)
 layer_two_bias = np.zeros((1, 10))
 
-#test homebrew softmax
-# print('\nsoftmax\n')
-# a = np.array([[1, 2, 5], [100, 100, 1]])
-# brew2 = softmax_safe(a)
-
-# summed = np.sum(brew2, axis=1)
-# print('brew summed', summed)
-# print('softmax_safe', brew2)
-
-# copy this
-# model = NeuralNetwork(
-#   layers=[
-#     Dense(neurons=89, activation=Sigmoid()),
-#     Dense(neurons=10, activation=Linear())
-#   ],
-#   loss = SoftmaxCrossEntropy(),
-#   seed=sacred_seed
-# )
-
 def forward(input: np.ndarray, params: np.ndarray):
   return np.dot(input, params)
 
@@ -66,3 +29,52 @@ def addbias(input: np.ndarray, bias: np.ndarray):
   return input + bias
 
 # need layer 1 weights
+
+# before we proceed with the loop we need...
+# sigmoid and sigmoid deriv function
+
+# impl me please
+
+# need a GENERATOR.  not just one batch, but a generator for a set of batches
+# that covers the entire training set and comprises an EPOCH
+def get_batch_generator(x: np.ndarray, y: np.ndarray, size:int = 60) -> np.ndarray:
+  # get a slice of size from a shuffled x and the corresponding target
+  return x, y
+
+# impl me please
+def sigmoid():
+  pass
+
+def linear():
+  pass
+
+def linear_deriv():
+  pass
+
+# impl me please
+def sigmoid_deriv():
+  pass
+
+# we need a loop guy
+MAX_EPOCHS = 50
+epoch_i = 0
+while(epoch_i < MAX_EPOCHS):
+  # we need to get a random batch of the X_train data
+
+  batch_gen = get_batch_generator(X_train, y_train_encoded)
+  for ii, (xb, yb) in enumerate(batch_gen):
+    layer_one_logits = forward(xb, layer_one_weights) + layer_one_bias
+    layer_one_output = sigmoid(layer_one_logits)
+
+    layer_two_logits = forward(layer_one_output, layer_two_weights) + layer_two_bias
+    layer_two_output = linear(layer_two_logits)
+    # calculate the loss
+    # do backward
+    # update (mutate) the weights
+
+  # end of epoch.  recalculate the loss, including on test set?
+  # and evaluate whether to continue
+  epoch_i += 1
+
+
+
