@@ -1,5 +1,6 @@
 import numpy as np
 
+from raw.activation import linear, sigmoid
 from raw.helper import *
 from raw.loss import softmax, softmax_safe
 from data.load_mnist import load
@@ -40,20 +41,6 @@ def addbias(input: np.ndarray, bias: np.ndarray):
 def get_batch_generator(x: np.ndarray, y: np.ndarray, size:int = 60) -> np.ndarray:
   # get a slice of size from a shuffled x and the corresponding target
   return x, y
-
-# impl me please
-def sigmoid():
-  pass
-
-def linear():
-  pass
-
-def linear_deriv():
-  pass
-
-# impl me please
-def sigmoid_deriv():
-  pass
 
 # we need a loop guy
 MAX_EPOCHS = 50
