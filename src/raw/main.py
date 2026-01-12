@@ -43,13 +43,14 @@ def get_batch_generator(x: np.ndarray, y: np.ndarray, size:int = 60) -> np.ndarr
   return x, y
 
 # we need a loop guy
-MAX_EPOCHS = 50
+MAX_EPOCHS = 1
 epoch_i = 0
 while(epoch_i < MAX_EPOCHS):
   # we need to get a random batch of the X_train data
 
   batch_gen = get_batch_generator(X_train, y_train_encoded)
   for ii, (xb, yb) in enumerate(batch_gen):
+
     layer_one_logits = forward(xb, layer_one_weights) + layer_one_bias
     layer_one_output = sigmoid(layer_one_logits)
 
