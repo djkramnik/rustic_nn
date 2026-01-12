@@ -9,3 +9,8 @@ def sigmoid_deriv(x: np.ndarray) -> np.ndarray:
 def sigmoid_deriv_elegant(x: np.ndarray) -> np.ndarray:
   return sigmoid(x) * (1 - sigmoid(x))
 
+def linear(x: np.ndarray) -> np.ndarray:
+  return x
+
+def linear_deriv(x: np.ndarray) -> np.ndarray:
+  return np.ones_like(x)
