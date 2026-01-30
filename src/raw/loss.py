@@ -17,5 +17,6 @@ def binary_cross_entropy(softmax_preds: np.ndarray, target: np.ndarray):
   loss = (-q* np.log(p)) - ((1 - q) * np.log(1 - p))
   return np.sum(loss) / softmax_preds.shape[0]
 
-def softmax_ce(preds: np.ndarray, target: np.ndarray) -> np.ndarray:
+# loss is a scalar bro
+def softmax_ce(preds: np.ndarray, target: np.ndarray) -> float
   return binary_cross_entropy(softmax_safe(preds), target)
