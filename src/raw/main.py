@@ -47,7 +47,7 @@ def get_batch_generator(x: np.ndarray, y: np.ndarray, size:int = 60) -> Iterator
     yield x[chunk], y[chunk]
 
 # we need a loop guy
-MAX_EPOCHS = 20
+MAX_EPOCHS = 50
 epoch_i = 0
 
 
@@ -164,8 +164,6 @@ while(epoch_i < MAX_EPOCHS):
     layer_two_weights -= (dLdW2 * 0.001)
     layer_two_bias -= (dLdB2 * 0.001)
 
-    break
-
   # end of epoch.  recalculate the loss on the entire test set bro
   # and evaluate whether to continue
 
@@ -180,8 +178,9 @@ while(epoch_i < MAX_EPOCHS):
     cached_layer_one_bias = layer_one_bias.copy()
     cached_layer_two_weights = layer_two_weights.copy()
     cached_layer_two_bias = layer_two_bias.copy()
+    best_loss = new_loss
   else:
-    print(f'regretablly, on epoch {epoch_i + 1}, loss degraded from {best_loss} to {new_loss}.  abort.  abort it all')
+    print(f'regretably, on epoch {epoch_i + 1}, loss degraded from {best_loss} to {new_loss}.  abort.  abort it all')
     break
 
   epoch_i += 1
