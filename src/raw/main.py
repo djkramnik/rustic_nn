@@ -15,6 +15,10 @@ y_train_encoded = one_hot_encode_fast(y_train, 10)
 
 X_train, X_test = scale_input_data(X_train, X_test)
 
+print(y_test.shape)
+print(max(y_test), min(y_test))
+exit()
+
 print(X_train.shape)
 
 # initialize random weights..
@@ -47,7 +51,7 @@ def get_batch_generator(x: np.ndarray, y: np.ndarray, size:int = 60) -> Iterator
     yield x[chunk], y[chunk]
 
 # we need a loop guy
-MAX_EPOCHS = 50
+MAX_EPOCHS = 2000
 epoch_i = 0
 
 
@@ -68,11 +72,24 @@ def calc_test_loss():
   # calculate the loss
   return softmax_ce(P, y_test_encoded)
 
+
 best_loss = None
 cached_layer_one_weights = layer_one_weights.copy()
 cached_layer_one_bias = layer_one_bias.copy()
 cached_layer_two_weights = layer_two_weights.copy()
 cached_layer_two_bias = layer_two_bias.copy()
+
+# calcuate from cached layer
+# calculate preds without softmax..
+# get the max pred value and compare it to the y_test value
+def calc_accuracy_model(x_test, y_test):
+  n1 = np.dot(x_test, cached_layer_one_weights)
+  z1 = n1 + cached_layer_one_bias
+  x2 = sigmoid(z1)
+  n2 = np.dot(x2, cached_layer_two_weights)
+  preds = n2 + cached_layer_two_bias
+  acc = np.sum((np.argmax(preds, axis=1) == y_test).astype(int)) / y_test.shape[0]
+  return acc
 
 while(epoch_i < MAX_EPOCHS):
   # we need to get a random batch of the X_train and y_train data
@@ -159,10 +176,10 @@ while(epoch_i < MAX_EPOCHS):
     # print('B2', layer_two_bias.shape)
     # print('dLdB2', dLdB2.shape)
 
-    layer_one_weights -= (dLdW1 * 0.001)
-    layer_one_bias -= (dLdB1 * 0.001)
-    layer_two_weights -= (dLdW2 * 0.001)
-    layer_two_bias -= (dLdB2 * 0.001)
+    layer_one_weights -= (dLdW1 * 0.005)
+    layer_one_bias -= (dLdB1 * 0.005)
+    layer_two_weights -= (dLdW2 * 0.005)
+    layer_two_bias -= (dLdB2 * 0.005)
 
   # end of epoch.  recalculate the loss on the entire test set bro
   # and evaluate whether to continue
@@ -170,22 +187,23 @@ while(epoch_i < MAX_EPOCHS):
   # calculate the loss after each epoch on the entire train set
   # cache the weight values
   # if the loss increases after an epoch than use the
-  new_loss = calc_test_loss()
 
-  if (best_loss is None or new_loss < best_loss):
-    print(f'loss on epoch {epoch_i + 1}: {new_loss}')
-    cached_layer_one_weights = layer_one_weights.copy()
-    cached_layer_one_bias = layer_one_bias.copy()
-    cached_layer_two_weights = layer_two_weights.copy()
-    cached_layer_two_bias = layer_two_bias.copy()
-    best_loss = new_loss
-  else:
-    print(f'regretably, on epoch {epoch_i + 1}, loss degraded from {best_loss} to {new_loss}.  abort.  abort it all')
-    break
+  if (epoch_i > 0 and epoch_i % 10 == 0):
+    new_loss = calc_test_loss()
+    if (best_loss is None or new_loss < best_loss):
+      print(f'loss on epoch {epoch_i + 1}: {new_loss}')
+      cached_layer_one_weights = layer_one_weights.copy()
+      cached_layer_one_bias = layer_one_bias.copy()
+      cached_layer_two_weights = layer_two_weights.copy()
+      cached_layer_two_bias = layer_two_bias.copy()
+      best_loss = new_loss
+    else:
+      print(f'regretably, on epoch {epoch_i + 1}, loss degraded from {best_loss} to {new_loss}.  abort.  abort it all')
+      break
 
   epoch_i += 1
 
-  # the best params (at the end of each epoch are now safe in cached_ vars)
+  # the best params (at the end of each epoch) are now safe in cached_ vars
 
-
+print('FINAL ACCURACY: ', calc_accuracy_model())
 
