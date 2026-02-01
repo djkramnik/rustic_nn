@@ -15,10 +15,6 @@ y_train_encoded = one_hot_encode_fast(y_train, 10)
 
 X_train, X_test = scale_input_data(X_train, X_test)
 
-print(y_test.shape)
-print(max(y_test), min(y_test))
-exit()
-
 print(X_train.shape)
 
 # initialize random weights..
@@ -191,7 +187,7 @@ while(epoch_i < MAX_EPOCHS):
   if (epoch_i > 0 and epoch_i % 10 == 0):
     new_loss = calc_test_loss()
     if (best_loss is None or new_loss < best_loss):
-      print(f'loss on epoch {epoch_i + 1}: {new_loss}')
+      print(f'loss on epoch {epoch_i}: {new_loss}')
       cached_layer_one_weights = layer_one_weights.copy()
       cached_layer_one_bias = layer_one_bias.copy()
       cached_layer_two_weights = layer_two_weights.copy()
@@ -205,5 +201,5 @@ while(epoch_i < MAX_EPOCHS):
 
   # the best params (at the end of each epoch) are now safe in cached_ vars
 
-print('FINAL ACCURACY: ', calc_accuracy_model())
+print('FINAL ACCURACY: ', calc_accuracy_model(X_test, y_test))
 
