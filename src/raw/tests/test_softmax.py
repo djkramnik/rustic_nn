@@ -1,5 +1,5 @@
 import numpy as np
-from raw.loss import softmax_safe, binary_cross_entropy
+from raw.c4.loss import softmax_safe, binary_cross_entropy
 
 def test_bce():
   a = np.array([2, 7, 1])

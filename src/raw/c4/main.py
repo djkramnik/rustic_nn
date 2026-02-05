@@ -1,9 +1,9 @@
 from typing import Iterator
 import numpy as np
 
-from raw.activation import linear, sigmoid
-from raw.helper import *
-from raw.loss import binary_cross_entropy, softmax, softmax_ce, softmax_safe
+from raw.c4.activation import linear, sigmoid
+from raw.c4.helper import *
+from raw.c4.loss import binary_cross_entropy, softmax, softmax_ce, softmax_safe
 from data.load_mnist import load
 import util.np_utils as utils
 

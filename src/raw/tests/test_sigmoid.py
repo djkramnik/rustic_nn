@@ -1,5 +1,5 @@
 import numpy as np
-from raw.activation import sigmoid, sigmoid_deriv, sigmoid_deriv_elegant, linear, linear_deriv
+from raw.c4.activation import sigmoid, sigmoid_deriv, sigmoid_deriv_elegant, linear, linear_deriv
 
 def test_sigmoid():
   a = np.array([2])

@@ -1,6 +1,6 @@
 {
   "python.analysis.typeCheckingMode": "off",
-
+  "python.defaultInterpreterPath": "${workspaceFolder}/env/bin/python",
   "python.analysis.diagnosticSeverityOverrides": {
     // Keep these as real errors
     "reportGeneralTypeIssues": "error",
