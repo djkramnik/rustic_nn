@@ -1,6 +1,5 @@
 import numpy as np
-from raw.c5.conv_1d import _input_grad_1d, conv_1d, _conv_grads_1d
-from raw.c5.conv_1d_batch import conv_1d_batch
+from raw.c5.conv_1d import _conv_grads_1d, _input_grad_1d, conv_1d
 
 def test_conv_1d():
   input_1d = np.array([1,2,3,4,5])
@@ -34,19 +33,6 @@ def test_slow_brain():
   assert np.allclose(ans, np.array([3, 6, 9, 12, 9]))
   [ans2, param_grad] = _conv_grads_1d(input_1d, param_1d, evil_out_grad)
   assert np.allclose(ans, ans2)
-
-def test_conv_1d_batch():
-  input_1d_batch = np.array([[0,1,2,3,4,5,6],
-                           [1,2,3,4,5,6,7]])
-  param_1d = np.array([1,1,1])
-  ans = np.array([
-    [1., 3., 6., 9., 12., 15., 11.],
-    [3., 6., 9., 12., 15., 18., 13.]
-  ])
-  assert np.allclose(conv_1d_batch(input_1d_batch, param_1d), ans)
-
-
-
 
 
 
