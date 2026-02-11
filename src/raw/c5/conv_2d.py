@@ -51,3 +51,52 @@ def _compute_output_2d(img_batch: np.ndarray, param: np.ndarray) -> np.ndarray:
    return np.stack(outs)
 
 print('conv forward output', _compute_output_2d(imgs_2d_batch, param_2d).shape)
+
+type ndarr = np.ndarray
+
+def _compute_grads_obs_2d(input_obs: ndarr, output_grad_obs: ndarr, param: ndarr) -> ndarr:
+  '''
+  input_obs: 2d tensor representing the input observation (non batch)
+  output_grad: 2d tendor representing the output gradient
+  param: 2d filter
+  '''
+  param_size = param.shape[0]
+  param_mid = param.shape[0] // 2
+  output_obs_pad = _pad_2d_obs(output_grad_obs, param_mid)
+  input_grad = np.zeros_like(input_obs)
+
+  for i_w in range(input_obs.shape[0]):
+     for i_h in range(input_obs.shape[1]):
+        for p_w in range(param_size):
+           for p_h in range(param_size):
+              input_grad[i_w][i_h] += output_obs_pad[i_w + param_size - p_w - 1][i_h + param_size- p_h - 1] * param[p_w][p_h]
+  return input_grad
+
+def _compute_grads_2d(inp: ndarr, output_grad: ndarr, param: ndarr) -> ndarr:
+  grads = [_compute_grads_obs_2d(inp[i], output_grad[i], param) for i in range(output_grad.shape[0])]
+  return np.stack(grads)
+
+def _param_grad_2d(inp: ndarr, output_grad: ndarr, param: ndarr) -> ndarr:
+  param_size = param.shape[0]
+  param_mid = param_size // 2
+  inp_pad = _pad_2d(inp, param_mid)
+  param_grad = np.zeros_like(param)
+  img_shape = output_grad.shape[1:] # output_grad is 3d this time.  img_shape is the shape after the batch dim
+
+  # I suppose inp is 3d too, preserving the batch
+  for i in range(inp.shape[0]):
+    for o_w in range(img_shape[0]):
+        for o_h in range(img_shape[1]):
+          for p_w in range(param_size):
+              for p_h in range(param_size):
+                param_grad[p_w][p_h] += inp_pad[i][o_w + p_w][o_h + p_h] * output_grad[i][o_w][o_h]
+  return param_grad
+
+def _compute_output_2d_sum(img_batch: ndarr,
+                           param: ndarr):
+
+    out = _compute_output_2d(img_batch, param)
+
+    return out.sum()
+
+
