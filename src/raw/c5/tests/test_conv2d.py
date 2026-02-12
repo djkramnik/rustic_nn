@@ -2,8 +2,6 @@ import numpy as np
 
 from raw.c5.conv_2d import _compute_grads_2d, _compute_output_2d_sum, _param_grad_2d
 
-
-
 def test_batch_2d_back():
   np.random.seed(190220)
 

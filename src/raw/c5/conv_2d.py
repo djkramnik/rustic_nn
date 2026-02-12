@@ -50,7 +50,7 @@ def _compute_output_2d(img_batch: np.ndarray, param: np.ndarray) -> np.ndarray:
    outs = [_compute_output_obs_2d(obs, param) for obs in img_batch]
    return np.stack(outs)
 
-print('conv forward output', _compute_output_2d(imgs_2d_batch, param_2d).shape)
+# print('conv forward output', _compute_output_2d(imgs_2d_batch, param_2d).shape)
 
 type ndarr = np.ndarray
 
