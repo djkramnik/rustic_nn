@@ -1,0 +1,42 @@
+import numpy as np
+
+from raw.c5.helper import assert_dim
+
+def pad_1d(arr, size=1):
+  assert_dim(arr, 1)
+  pad = np.zeros(size)
+  return np.concatenate((pad, arr, pad))
+
+def conv1d_fwd(arr, param, pad=1):
+  inp_pad = pad_1d(arr, pad)
+  out = np.zeros_like(arr)
+  for i in range(arr.shape[0]):
+    for j in range(param.shape[0]):
+      out[i] += inp_pad[i + j] * param[j]
+  return out
+
+inp = np.array([1, 2, 3, 4])
+param = np.array([5, 6, 7])
+
+out = conv1d_fwd(inp, param)
+print(out)
+assert np.allclose([20, 38, 56, 39], out)
+
+
+def clamp_01(n):
+  return min(max(0, n), 1)
+
+def input_grad_1d(arr, param, pad = 1, outgrad = None):
+  if outgrad is None:
+    outgrad = np.ones_like(arr)
+
+  inp_grad_pad = np.zeros_like(pad_1d(arr, pad))
+
+  for i in range(arr.shape[0]):
+    for j in range(param.shape[0]):
+      inp_grad_pad[i + j] += param[j] * outgrad[i]
+  return inp_grad_pad[pad:pad * -1]
+
+inp_grad = input_grad_1d(inp, param)
+print(inp_grad)
+print(input_grad_1d(inp, param, 1, np.array([2, 3, 4, 5])))
