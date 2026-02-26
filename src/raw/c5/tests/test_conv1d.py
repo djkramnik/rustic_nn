@@ -46,7 +46,7 @@ def test_injured_brain():
   brain_ans2 = input_grad_1d(inp, param, 1, evil_out_grad)
   assert np.allclose(book_ans2, [27, 52, 70, 58], brain_ans2)
 
-def homework_param():
+def test_homework_param():
   # inp = np.array([1, 2, 3, 4])
   # param = np.array([5, 6, 7])
   # evil_out_grad = np.array([2, 3, 4, 5])
