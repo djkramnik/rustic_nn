@@ -70,4 +70,27 @@ def _input_grad_1d(inp: np.ndarray,
 
     return input_grad
 
+def _param_grad_1d(inp: np.ndarray,
+                   param: np.ndarray,
+                   output_grad: np.ndarray = None) -> np.ndarray:
 
+    param_len = param.shape[0]
+    param_mid = param_len // 2
+    input_pad = _pad_1d(inp, param_mid)
+
+    if output_grad is None:
+        output_grad = np.ones_like(inp)
+    else:
+        assert_same_shape(inp, output_grad)
+
+    # Zero padded 1 dimensional convolution
+    param_grad = np.zeros_like(param)
+    input_grad = np.zeros_like(inp)
+
+    for o in range(inp.shape[0]):
+        for p in range(param.shape[0]):
+            param_grad[p] += input_pad[o+p] * output_grad[o]
+
+    assert_same_shape(param_grad, param)
+
+    return param_grad

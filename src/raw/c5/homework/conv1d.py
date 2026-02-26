@@ -40,3 +40,20 @@ def input_grad_1d(arr, param, pad = 1, outgrad = None):
 inp_grad = input_grad_1d(inp, param)
 print(inp_grad)
 print(input_grad_1d(inp, param, 1, np.array([2, 3, 4, 5])))
+
+def param_grad_1d(arr, param, pad = 1, outgrad = None):
+  if outgrad is None:
+    outgrad = np.ones_like(param)
+  inp_pad = pad_1d(arr, pad)
+
+  param_grad = np.zeros_like(param)
+  for i in range(arr.shape[0]):
+    for j in range(param.shape[0]):
+      param_grad[j] += (inp_pad[i + j] * outgrad[j])
+  return param_grad
+
+
+param_g = param_grad_1d(inp, param)
+print('param', param_g)
+param_g2 = param_grad_1d(inp, param, 1, np.array([1, 2, 3]))
+print('param with outgrad', param_g2)

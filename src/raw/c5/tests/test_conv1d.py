@@ -1,5 +1,6 @@
 import numpy as np
-from raw.c5.conv_1d import _conv_grads_1d, _input_grad_1d, conv_1d
+from raw.c5.conv_1d import _conv_grads_1d, _input_grad_1d, _param_grad_1d, conv_1d
+from raw.c5.homework.conv1d import input_grad_1d, param_grad_1d
 
 def test_conv_1d():
   input_1d = np.array([1,2,3,4,5])
@@ -38,10 +39,29 @@ def test_injured_brain():
   inp = np.array([1, 2, 3, 4])
   param = np.array([5, 6, 7])
   evil_out_grad = np.array([2, 3, 4, 5])
-  ans = _input_grad_1d(inp, param)
-  assert np.allclose(ans, [11, 18, 18, 13])
-  ans2 = _input_grad_1d(inp, param, evil_out_grad)
-  assert np.allclose(ans2, [27, 52, 70, 58])
+  book_ans = _input_grad_1d(inp, param)
+  brain_ans = input_grad_1d(inp, param)
+  assert np.allclose(book_ans, [11, 18, 18, 13], brain_ans)
+  book_ans2 = _input_grad_1d(inp, param, evil_out_grad)
+  brain_ans2 = input_grad_1d(inp, param, 1, evil_out_grad)
+  assert np.allclose(book_ans2, [27, 52, 70, 58], brain_ans2)
+
+def homework_param():
+  # inp = np.array([1, 2, 3, 4])
+  # param = np.array([5, 6, 7])
+  # evil_out_grad = np.array([2, 3, 4, 5])
+  inp = np.array([1,2,3,4,5])
+  param = np.array([1,1,1])
+  evil_out_grad = np.array([1, 2, 3, 4, 5])
+
+  book_ans = _param_grad_1d(inp, param)
+  brain_ans = param_grad_1d(inp, param)
+  assert np.allclose(book_ans, brain_ans)
+  book_ans2 = _param_grad_1d(inp, param, evil_out_grad)
+  brain_ans2 = param_grad_1d(inp, param, 1, evil_out_grad)
+  assert np.allclose(book_ans2, brain_ans2)
+
+
 
 
 
