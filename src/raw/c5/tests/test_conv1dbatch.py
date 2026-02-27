@@ -1,5 +1,8 @@
 import numpy as np
-from raw.c5.conv_1d_batch import _conv_grads_1d_batch, conv_1d_batch, input_grad_1d_batch, param_grad_1d_batch
+from raw.c5.conv_1d_batch import _pad_1d_batch, _conv_grads_1d_batch, conv_1d_batch, input_grad_1d_batch, param_grad_1d_batch
+
+def test_homework_pad():
+
 
 def test_conv_1d_batch():
   input_1d_batch = np.array([[0,1,2,3,4,5,6],

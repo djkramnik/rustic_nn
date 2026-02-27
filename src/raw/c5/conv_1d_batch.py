@@ -21,7 +21,7 @@ def _pad_1d_batch(inp: np.ndarray, num: int) -> np.ndarray:
 
 def conv_1d_batch(inp: np.ndarray, param: np.ndarray) -> np.ndarray:
   outs = [conv_1d(obs, param) for obs in inp]
-  print(type(outs))
+  #print(type(outs))
   return np.stack(outs)
 
 def _conv_grads_1d_batch(
