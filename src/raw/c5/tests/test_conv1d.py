@@ -43,7 +43,7 @@ def test_injured_brain():
   brain_ans = input_grad_1d(inp, param)
   assert np.allclose(book_ans, [11, 18, 18, 13], brain_ans)
   book_ans2 = _input_grad_1d(inp, param, evil_out_grad)
-  brain_ans2 = input_grad_1d(inp, param, 1, evil_out_grad)
+  brain_ans2 = input_grad_1d(inp, param, evil_out_grad)
   assert np.allclose(book_ans2, [27, 52, 70, 58], brain_ans2)
 
 def test_homework_param():
@@ -58,7 +58,7 @@ def test_homework_param():
   brain_ans = param_grad_1d(inp, param)
   assert np.allclose(book_ans, brain_ans)
   book_ans2 = _param_grad_1d(inp, param, evil_out_grad)
-  brain_ans2 = param_grad_1d(inp, param, 1, evil_out_grad)
+  brain_ans2 = param_grad_1d(inp, param, evil_out_grad)
   assert np.allclose(book_ans2, brain_ans2)
 
 

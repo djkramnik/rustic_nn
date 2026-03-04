@@ -1,13 +1,14 @@
 import numpy as np
 
-from raw.c5.helper import assert_dim
+from raw.c5.helper import assert_dim, assert_same_shape
 
 def pad_1d(arr, size=1):
   assert_dim(arr, 1)
   pad = np.zeros(size)
   return np.concatenate((pad, arr, pad))
 
-def conv1d_fwd(arr, param, pad=1):
+def conv1d_fwd(arr, param):
+  pad = param.shape[0] // 2
   inp_pad = pad_1d(arr, pad)
   out = np.zeros_like(arr)
   for i in range(arr.shape[0]):
@@ -19,10 +20,11 @@ def conv1d_fwd(arr, param, pad=1):
 def clamp_01(n):
   return min(max(0, n), 1)
 
-def input_grad_1d(arr, param, pad = 1, outgrad = None):
+def input_grad_1d(arr, param, outgrad = None):
   if outgrad is None:
     outgrad = np.ones_like(arr)
 
+  pad = param.shape[0] // 2
   inp_grad_pad = np.zeros_like(pad_1d(arr, pad))
 
   for i in range(arr.shape[0]):
@@ -34,9 +36,14 @@ def input_grad_1d(arr, param, pad = 1, outgrad = None):
 # print(inp_grad)
 # print(input_grad_1d(inp, param, 1, np.array([2, 3, 4, 5])))
 
-def param_grad_1d(arr, param, pad = 1, outgrad = None):
+def param_grad_1d(arr, param, outgrad = None):
   if outgrad is None:
     outgrad = np.ones_like(arr)
+  else:
+    assert_same_shape(arr, outgrad)
+
+  # so that shape will stay the same
+  pad = param.shape[0] // 2
   inp_pad = pad_1d(arr, pad)
 
   param_grad = np.zeros_like(param)
@@ -51,27 +58,27 @@ def param_grad_1d(arr, param, pad = 1, outgrad = None):
 # param_g2 = param_grad_1d(inp, param, 1, np.array([1, 2, 3]))
 # print('param with outgrad', param_g2)
 
-inp = np.array([1, 2, 3, 4])
-param = np.array([5, 6, 7])
+# inp = np.array([1, 2, 3, 4])
+# param = np.array([5, 6, 7])
 
-out = conv1d_fwd(inp, param)
-# print(out)
-assert np.allclose([20, 38, 56, 39], out)
+# out = conv1d_fwd(inp, param)
+# # print(out)
+# assert np.allclose([20, 38, 56, 39], out)
 
-param2 = np.array([1, 2, 3])
-out2 = conv1d_fwd(out, param2)
-assert np.allclose([154, 264, 267, 134], out2)
+# param2 = np.array([1, 2, 3])
+# out2 = conv1d_fwd(out, param2)
+# assert np.allclose([154, 264, 267, 134], out2)
 
-inp2_grad = input_grad_1d(out, param2)
-# print('inp2_grad', inp2_grad)
-param2_grad = param_grad_1d(out, param2)
-# print('param2_grad', param2_grad)
+# inp2_grad = input_grad_1d(out, param2)
+# # print('inp2_grad', inp2_grad)
+# param2_grad = param_grad_1d(out, param2)
+# # print('param2_grad', param2_grad)
 
-assert np.allclose([3, 6, 6, 5], inp2_grad)
-# print('inp', inp)
-# print('param', param)
-inp1_grad = input_grad_1d(inp, param, 1, inp2_grad)
-# print('inp1_grad', inp1_grad)
-param1_grad = param_grad_1d(inp, param, 1, inp2_grad)
-# print(param1_grad)
+# assert np.allclose([3, 6, 6, 5], inp2_grad)
+# # print('inp', inp)
+# # print('param', param)
+# inp1_grad = input_grad_1d(inp, param, 1, inp2_grad)
+# # print('inp1_grad', inp1_grad)
+# param1_grad = param_grad_1d(inp, param, 1, inp2_grad)
+# # print(param1_grad)
 

@@ -1,5 +1,6 @@
 import numpy as np
 from raw.c5.conv_1d_batch import _pad_1d_batch, _conv_grads_1d_batch, conv_1d_batch, input_grad_1d_batch, param_grad_1d_batch
+from raw.c5.homework.conv1d_batch import inp_grad_batch, param_grad_batch
 
 
 
@@ -38,3 +39,17 @@ def test_book_impl():
   param_grad_book = param_grad_1d_batch(input_1d_batch, param_1d, output_grad)
   assert np.allclose(input_grad_book, input_grad)
   assert np.allclose(param_grad_book, param_grad)
+
+def test_homework_impl():
+  input_1d_batch = np.array([[0,1,2,3,4,5,6], [1,2,3,4,5,6,7]])
+  param_1d = np.array([1,1,1])
+  output_grad = input_1d_batch.copy() + 1
+  input_grad_book = input_grad_1d_batch(input_1d_batch, param_1d, output_grad)
+  param_grad_book = param_grad_1d_batch(input_1d_batch, param_1d, output_grad)
+  input_grad_homework = inp_grad_batch(input_1d_batch, param_1d, output_grad)
+  param_grad_homework = param_grad_batch(input_1d_batch, param_1d, output_grad)
+  assert np.allclose(input_grad_book, input_grad_homework)
+  assert np.allclose(param_grad_book, param_grad_homework)
+
+
+
