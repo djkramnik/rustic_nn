@@ -1,1 +1,1 @@
-PYTHONPATH=src python src/$1
+PYTHONPATH=src python $1
