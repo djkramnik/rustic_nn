@@ -37,6 +37,10 @@ def conv_2d_inp_grad(arr: ndarray, param: ndarray, outgrad: ndarray = None):
   plen = param.shape[0]
   inp_grad_padded = pad_2d(np.zeros_like(arr), pad)
 
+
+  # each output is made up of different cells of the input, even though shape wise they are the same
+  # when you are at the innermost loop running the update, remember that at the same location in fwd, you are updating a single output
+  # position here.  That output gradient position is the one to multiply by
   for row in range(arr.shape[0]):
     for col in range(arr.shape[1]):
       for pr in range(plen):
@@ -47,3 +51,5 @@ def conv_2d_inp_grad(arr: ndarray, param: ndarray, outgrad: ndarray = None):
 
 # param backprop (sans, incl. outgrad)
 
+def conv_2d_param_grad(arr: ndarray, param: ndarray, outgrad: ndarray = None):
+  pass
