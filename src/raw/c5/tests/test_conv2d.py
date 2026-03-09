@@ -1,6 +1,29 @@
 import numpy as np
 
-from raw.c5.conv_2d import _compute_grads_2d, _compute_output_2d_sum, _param_grad_2d
+from raw.c5.conv_2d import _compute_grads_2d, _compute_grads_obs_2d, _compute_output_2d_sum, _compute_output_obs_2d, _param_grad_2d
+from raw.c5.homework.conv2d import conv_2d_fwd, conv_2d_inp_grad
+
+def test_conv2d_fwd():
+  inp = np.arange(16).reshape((4,4)) + 1
+  param = np.arange(9).reshape((3,3)) + 1
+  book_fwd = _compute_output_obs_2d(inp, param)
+  homework_fwd = conv_2d_fwd(inp, param)
+  assert np.allclose(book_fwd, homework_fwd)
+
+def test_conv2d_back():
+  inp = np.arange(16).reshape((4,4)) + 1
+  param = np.arange(9).reshape((3,3)) + 1
+  book_inp_grad = _compute_grads_obs_2d(inp, np.ones_like(inp), param)
+  brain_inp_grad = conv_2d_inp_grad(inp, param)
+  # print(book_inp_grad)
+  # print(brain_inp_grad)
+  assert np.allclose(book_inp_grad, brain_inp_grad)
+  evil_out = inp - 1
+  book_inp_grad2 = _compute_grads_obs_2d(inp, evil_out, param)
+  brain_inp_grad2 = conv_2d_inp_grad(inp, param, evil_out)
+  # print(book_inp_grad2)
+  # print(brain_inp_grad2)
+  assert np.allclose(book_inp_grad2, brain_inp_grad2)
 
 def test_batch_2d_back():
   np.random.seed(190220)
