@@ -52,4 +52,18 @@ def conv_2d_inp_grad(arr: ndarray, param: ndarray, outgrad: ndarray = None):
 # param backprop (sans, incl. outgrad)
 
 def conv_2d_param_grad(arr: ndarray, param: ndarray, outgrad: ndarray = None):
-  pass
+  if outgrad is None:
+    outgrad = np.ones_like(arr)
+  else:
+    assert_same_shape(arr, outgrad)
+
+  pad = param.shape[0] // 2
+  inp_padded = pad_2d(arr, pad)
+  param_grad = np.zeros_like(param)
+
+  for row in range(arr.shape[0]):
+    for col in range(arr.shape[1]):
+      for pw in range(param.shape[0]):
+        for ph in range(param.shape[1]):
+          param_grad[pw, ph] += inp_padded[row + pw, col+ph] * outgrad[row, col]
+  return param_grad
