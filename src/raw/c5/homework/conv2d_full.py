@@ -3,7 +3,7 @@ from numpy import ndarray
 
 from raw.c5.conv_2d_channels import _pad_conv_input
 from raw.c5.helper import assert_dim
-from raw.c5.homework.conv2d import conv_2d_fwd
+from raw.c5.homework.conv2d import conv_2d_fwd, conv_2d_inp_grad
 from raw.c5.homework.conv2d_batch import pad_2d_batch
 
 # this is still only padding the last two dims?
@@ -33,7 +33,14 @@ def conv_2d_full(arr: ndarray, param: ndarray):
 
   return output
 
-## 2, 1, 4, 4
-## 1, 2, 3, 3
+def full_inp_grad(arr: ndarray, param: ndarray, outgrad: ndarray = None):
+  if outgrad is None:
+    outgrad = np.ones((arr.shape[0], param.shape[1], arr.shape[2], arr.shape[3]))
 
-# print(cifar_imgs[0][0].shape)
+  inp_grad = np.zeros_like(arr)
+  for i in range(arr.shape[0]):
+    for j in range(param.shape[0]):
+      for k in range(param.shape[1]):
+        inp_grad[i][j] += conv_2d_inp_grad(arr[i][j], param[j][k], outgrad[i][k])
+  return inp_grad
+
