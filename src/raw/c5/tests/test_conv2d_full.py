@@ -1,82 +1,95 @@
 import numpy as np
 
-from raw.c5.conv_2d_channels import _output
+from raw.c5.conv_2d_channels import _input_grad, _output
 from raw.c5.homework.conv2d import conv_2d_fwd
-from raw.c5.homework.conv2d_full import conv_2d_full
+from raw.c5.homework.conv2d_full import conv_2d_full, full_inp_grad
 
 np.random.seed(190220)
 cifar_imgs = np.random.randn(10, 3, 32, 32)
 cifar_param = np.random.randn(3, 16, 5, 5)
 
-def test_secondlayer():
-  param2 = np.array([
-    [
-      [
-        [1, 1, 1],
-        [1, 3, 3],
-        [1, 3, 3]
-      ],
-      [
-        [3, 1, 1],
-        [1, 2, 2],
-        [2, 2, 3]
-      ]
-    ],
-    [
-      [
-        [3, 1, 3],
-        [3, 1, 2],
-        [3, 2, 3]
-      ],
-      [
-        [2, 3, 2],
-        [3, 2, 3],
-        [1, 3, 1]
-      ]
-    ],
-    [
-      [
-        [2, 3, 2],
-        [3, 2, 3],
-        [1, 2, 1]
-      ],
-      [
-        [1, 3, 3],
-        [1, 1, 1],
-        [1, 2, 1]
-      ]
-    ],
-  ])
-  homework = np.array([
-    [
-      [
-        [169, 149],
-        [154, 198]
-      ],
-      [
-        [172, 139],
-        [164, 91]
-      ],
-      [
-        [105, 66],
-        [143, 77]
-      ]
-    ]
-  ])
-  allegedo2 = np.array([
-    [
-      [3832, 3437],
-      [3273, 3295]
-    ],
-    [
-      [3416, 2870],
-      [3150, 3164]
-    ]
-  ])
-  bookish = conv_2d_full(homework, param2)
-  DAbook = _output(homework, param2)
-  print(DAbook)
-  assert np.allclose(allegedo2, bookish, DAbook)
+def test_inp_grad():
+  neutral_outgrad = np.ones((cifar_imgs.shape[0], cifar_param.shape[1], cifar_imgs.shape[2], cifar_imgs.shape[3]))
+  print(neutral_outgrad.shape)
+  book = _input_grad(cifar_imgs, neutral_outgrad, cifar_param)
+  brain = full_inp_grad(cifar_imgs, cifar_param)
+  assert np.allclose(book, brain)
+
+  evil_outgrad = np.random.randn(cifar_imgs.shape[0], cifar_param.shape[1], cifar_imgs.shape[2], cifar_imgs.shape[3])
+  print(evil_outgrad.shape)
+  book2 = _input_grad(cifar_imgs, evil_outgrad, cifar_param)
+  brain2 = full_inp_grad(cifar_imgs, cifar_param, evil_outgrad)
+  assert np.allclose(book2, brain2)
+
+# def test_secondlayer():
+#   param2 = np.array([
+#     [
+#       [
+#         [1, 1, 1],
+#         [1, 3, 3],
+#         [1, 3, 3]
+#       ],
+#       [
+#         [3, 1, 1],
+#         [1, 2, 2],
+#         [2, 2, 3]
+#       ]
+#     ],
+#     [
+#       [
+#         [3, 1, 3],
+#         [3, 1, 2],
+#         [3, 2, 3]
+#       ],
+#       [
+#         [2, 3, 2],
+#         [3, 2, 3],
+#         [1, 3, 1]
+#       ]
+#     ],
+#     [
+#       [
+#         [2, 3, 2],
+#         [3, 2, 3],
+#         [1, 2, 1]
+#       ],
+#       [
+#         [1, 3, 3],
+#         [1, 1, 1],
+#         [1, 2, 1]
+#       ]
+#     ],
+#   ])
+#   homework = np.array([
+#     [
+#       [
+#         [169, 149],
+#         [154, 198]
+#       ],
+#       [
+#         [172, 139],
+#         [164, 91]
+#       ],
+#       [
+#         [105, 66],
+#         [143, 77]
+#       ]
+#     ]
+#   ])
+#   allegedo2 = np.array([
+#     [
+#       [3832, 3437],
+#       [3273, 3295]
+#     ],
+#     [
+#       [3416, 2870],
+#       [3150, 3164]
+#     ]
+#   ])
+#   bookish = conv_2d_full(homework, param2)
+#   DAbook = _output(homework, param2)
+#   print(DAbook)
+#   assert np.allclose(allegedo2, bookish, DAbook)
 
 # def test_firstlayer():
 #   inp = np.array([

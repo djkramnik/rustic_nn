@@ -6,6 +6,7 @@ from raw.c5.helper import assert_dim
 from raw.c5.homework.conv2d import conv_2d_fwd, conv_2d_inp_grad
 from raw.c5.homework.conv2d_batch import pad_2d_batch
 
+
 # this is still only padding the last two dims?
 def pad_2d_full(arr: ndarray, size = 1):
   assert_dim(arr, 4)

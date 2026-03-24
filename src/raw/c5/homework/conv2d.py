@@ -47,7 +47,7 @@ def conv_2d_inp_grad(arr: ndarray, param: ndarray, outgrad: ndarray = None):
         for pc in range(plen):
           inp_grad_padded[row + pr, col+pc] += (param[pr, pc] * outgrad[row , col])
 
-  return inp_grad_padded[pad:-1,pad:-1]
+  return inp_grad_padded[pad:-pad,pad:-pad]
 
 # param backprop (sans, incl. outgrad)
 
