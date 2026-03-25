@@ -1,5 +1,7 @@
 import numpy as np
 
+from raw.c5.homework.conv2d import conv_2d_param_grad
+
 a = np.array([1, 2, 3, 4]).reshape((2,2))
 
 b = np.array([1, 2, 3, 2, 3, 1, 3, 1, 2]).reshape((3, 3))
@@ -21,3 +23,10 @@ def conv_squares(arr, param):
   return output
 
 print(conv_squares(a, b))
+
+param_grad = conv_2d_param_grad(a, b)
+print(param_grad)
+
+outgrad = np.array([4,1,2,3]).reshape((2,2))
+param_grad_2 = conv_2d_param_grad(a, b, outgrad)
+print(param_grad_2)
