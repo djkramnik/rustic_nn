@@ -48,14 +48,14 @@ class NumWithGrad(object):
         self.grad += backward_grad
 
     if self.creation_op == 'add':
-      # wont' this recurse endlessly?
+      # wont' this recurse endlessly? # no. depends_on[0] is not self
       # simply send backward self.grad, since increasing either of these
       # elements will increase the output by that same amount
       self.depends_on[0].backward(self.grad)
       self.depends_on[1].backward(self.grad)
 
     if self.creation_op == 'mul':
-      # also endless recursion afaict
+      # also endless recursion afaict. # no.  depends_on[0] is not self.
 
       # calculate the derivative with respect to the first element
       doutdfirst = self.depends_on[1] * self.grad

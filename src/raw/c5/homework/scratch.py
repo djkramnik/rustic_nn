@@ -5,9 +5,17 @@ from raw.c5.helper import assert_dim
 from raw.c5.homework.conv2d import conv_2d_param_grad
 from raw.c5.homework.conv2d_full import conv_2d_full
 
-a = np.array([1, 2, 3, 4]).reshape((2,2))
+# autodiff
 
-b = np.array([1, 2, 3, 2, 3, 1, 3, 1, 2]).reshape((3, 3))
+# def graph(a: int) -> int:
+#   b = a * 4
+#   c = b + 3
+#   return c * (a + 2)
+
+# print(graph(3))
+# print(graph(3.1))
+
+# exit(0)
 
 def pad(arr, size = 1):
   padded_originals = [np.concatenate([np.zeros(size), row, np.zeros(size)]) for row in arr]
@@ -41,7 +49,14 @@ def param_grad_squares(inp, param, outgrad = None):
       param_grad += (window * outgrad[i][j])
   return param_grad
 
-# print(conv_squares(a, b))
+# conv_squares
+# a = np.array([1, 2, 3, 4]).reshape((2,2))
+# b = np.array([1, 2, 3, 2, 3, 1, 3, 1, 2]).reshape((3, 3))
+
+# print(conv_squares(a,b))
+
+# exit(0)
+
 
 ra = np.random.randn(2,2)
 rb = np.random.randn(3,3)
