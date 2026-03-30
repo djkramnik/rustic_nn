@@ -4,6 +4,22 @@ from raw.c5.conv_2d_channels import _param_grad
 from raw.c5.helper import assert_dim
 from raw.c5.homework.conv2d import conv_2d_param_grad
 from raw.c5.homework.conv2d_full import conv_2d_full
+from raw.c5.tensor import Tensor
+
+# tensor
+a = Tensor(np.array([1, 2, 3, 4]).reshape((2,2)))
+b = a * 4
+c = b + 3
+d = c * (a + 2)
+# print(b.arr)
+# a.backward()
+d.backward()
+print(a.grad.arr)
+
+
+
+exit(0)
+
 
 # autodiff
 

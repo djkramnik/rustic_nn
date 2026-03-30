@@ -9,7 +9,6 @@ def to_number_grad(num: Numerable) -> "NumWithGrad":
     return num
   return NumWithGrad(num)
 
-
 class NumWithGrad(object):
   def __init__(self,
     num: Numerable,
@@ -66,9 +65,6 @@ class NumWithGrad(object):
       doutdsecond = self.depends_on[0] * self.grad
       # send backward the derivative with respect to that element
       self.depends_on[1].backward(doutdsecond.num)
-
-
-
 
 
 
