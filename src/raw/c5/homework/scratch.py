@@ -14,7 +14,7 @@ d = c * (a + 2)
 # print(b.arr)
 # a.backward()
 d.backward()
-print(a.grad.arr)
+# print(a.grad.arr)
 
 
 
