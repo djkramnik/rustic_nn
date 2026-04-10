@@ -7,18 +7,18 @@ from raw.c5.homework.conv2d_full import conv_2d_full
 from raw.c5.tensor import Tensor
 
 # tensor
-a = Tensor(np.array([1, 2, 3, 4]).reshape((2,2)))
-b = a * 4
-c = b + 3
-d = c * (a + 2)
-# print(b.arr)
-# a.backward()
-d.backward()
-# print(a.grad.arr)
+# a = Tensor(np.array([1, 2, 3, 4]).reshape((2,2)))
+# b = a * 4
+# c = b + 3
+# d = c * (a + 2)
+# # print(b.arr)
+# # a.backward()
+# d.backward()
+# # print(a.grad.arr)
 
 
 
-exit(0)
+# exit(0)
 
 
 # autodiff
@@ -37,6 +37,12 @@ def pad(arr, size = 1):
   padded_originals = [np.concatenate([np.zeros(size), row, np.zeros(size)]) for row in arr]
   rows = np.zeros((size, arr.shape[1] + (size * 2)))
   return np.concatenate([rows, padded_originals, rows], axis=0)
+
+def pad_irregular(arr, size=1):
+  out = np.zeros((arr.shape[0] + 2 * size, arr.shape[1] + 2 * size))
+  out[size:size + arr.shape[0], size:size + arr.shape[1]] = arr
+  return out
+
 
 def conv_squares(arr, param):
   pw = param.shape[0]
@@ -66,6 +72,13 @@ def param_grad_squares(inp, param, outgrad = None):
   return param_grad
 
 # conv_squares
+
+a = np.arange(1, 13).reshape((3,4))
+b = np.array([1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2]).reshape((5,5))
+print(a)
+print(b)
+print(conv_squares(a,b))
+exit(0)
 # a = np.array([1, 2, 3, 4]).reshape((2,2))
 # b = np.array([1, 2, 3, 2, 3, 1, 3, 1, 2]).reshape((3, 3))
 
