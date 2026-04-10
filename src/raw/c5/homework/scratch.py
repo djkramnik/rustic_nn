@@ -48,6 +48,7 @@ def conv_squares(arr, param):
   pw = param.shape[0]
   pad_sz = pw // 2
   padded_inp = pad(arr, pad_sz)
+  print('padded', padded_inp.shape)
   output = np.zeros(arr.shape)
   for i in range(arr.shape[0]):
     for j in range(arr.shape[1]):
@@ -75,8 +76,9 @@ def param_grad_squares(inp, param, outgrad = None):
 
 a = np.arange(1, 13).reshape((3,4))
 b = np.array([1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2]).reshape((5,5))
-print(a)
-print(b)
+
+# print(a)
+# print(b)
 print(conv_squares(a,b))
 exit(0)
 # a = np.array([1, 2, 3, 4]).reshape((2,2))
