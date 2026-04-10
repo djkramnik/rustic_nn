@@ -24,10 +24,33 @@ b = np.array([1, 2, 3, 2, 3, 1, 3, 1, 2]).reshape((3, 3))
 padded_inp = pad(a)
 
 super_inp = sliding_window(padded_inp, (3,3))
-print(super_inp)
+# print(super_inp)
 
 # a2 = np.arange(1, 13).reshape((3,4))
 # b2 = np.array([1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2]).reshape((5,5))
 # padded_inp2 = pad(a2, 2)
 # super_inp2 = sliding_window(padded_inp2, b2.shape)
 # print(super_inp2, super_inp2.shape)
+
+# DOES NOT WORK
+# test = np.matmul(super_inp, b)
+# print(test)
+# test2 = np.sum(test, axis=2)
+# print(test2)
+# print(super_inp.shape)
+# print(super_inp)
+
+# out = np.zeros((2,2))
+# gah = None
+# for i, arr in enumerate(super_inp[:]):
+#   m = arr * b
+#   # print(m.shape)
+#   if i == 0:
+#     gah = m
+
+# print(gah)
+# print(np.sum(gah, axis=(1,2)))
+
+gah = super_inp * b
+# print(gah.shape)
+print((super_inp * b).sum(axis=(2,3)))

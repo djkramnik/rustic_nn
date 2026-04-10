@@ -74,12 +74,15 @@ def param_grad_squares(inp, param, outgrad = None):
 
 # conv_squares
 
-a = np.arange(1, 13).reshape((3,4))
-b = np.array([1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2]).reshape((5,5))
+# a = np.arange(1, 13).reshape((3,4))
+# b = np.array([1, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2]).reshape((5,5))
 
-# print(a)
-# print(b)
+a = np.array([1, 2, 3, 4]).reshape((2,2))
+b = np.array([1, 2, 3, 2, 3, 1, 3, 1, 2]).reshape((3, 3))
+
 print(conv_squares(a,b))
+
+
 exit(0)
 # a = np.array([1, 2, 3, 4]).reshape((2,2))
 # b = np.array([1, 2, 3, 2, 3, 1, 3, 1, 2]).reshape((3, 3))
