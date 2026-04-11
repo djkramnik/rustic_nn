@@ -53,4 +53,10 @@ super_inp = sliding_window(padded_inp, (3,3))
 
 gah = super_inp * b
 # print(gah.shape)
-print((super_inp * b).sum(axis=(2,3)))
+out = (super_inp * b)
+ans1 = out.sum(axis=(2,3))
+ans2 = out.sum(axis=(3,2))
+ans3 = out.sum(axis=(-1,-2))
+
+assert np.allclose(ans1, ans2, ans3)
+print(ans1,'\n\n', ans2, '\n\n', ans3)
