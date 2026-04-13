@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.lib.stride_tricks import as_strided
 
 # pad a 3dim array
 def pad(arr, size = 1):
@@ -51,6 +52,18 @@ def conv_chan_squares(arr: ndarray, param: ndarray):
       out[out_chan] += local_out
   return out
 
+def sliding_window_3d(inp: ndarray, window_shape: tuple[int, int]):
+  chan, Hp, Hw = inp.shape
+  kh, kw = window_shape
+  out_h = Hp - kh + 1
+  out_w = Hw - kw + 1
+  assert out_w > 0
+  assert out_h > 0
+  chan_stride, row_stride, col_stride = inp.strides
+  new_strides = (chan_stride, row_stride, col_stride, row_stride, col_stride)
+  new_shape = (chan, out_h, out_w, kh, kw)
+  return as_strided(inp, new_shape, new_strides)
+
 inp = np.array([1, 2, 3, 4, 2, 1, 3, 2]).reshape((2, 2, 2))
 param = np.array([
   1, 2, 3,
@@ -79,4 +92,12 @@ param = np.array([
 ]).reshape((2, 3, 3, 3))
 
 classic_out = conv_chan_squares(inp, param)
-print(classic_out)
+# print(classic_out)
+
+# print(inp.shape)
+padded_inp = pad(inp)
+
+print(padded_inp.shape)
+three_d_win = sliding_window_3d(padded_inp, (3,3))
+print(three_d_win.shape)
+print(three_d_win)
