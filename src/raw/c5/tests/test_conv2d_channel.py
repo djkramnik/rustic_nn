@@ -44,3 +44,35 @@ def test_output():
   assert np.allclose(output[0][1][0][0], 111)
   assert np.allclose(output[1][0][0][0], 121)
   assert np.allclose(output[1][1][0][0], 139)
+
+def test_output2():
+  batcha = np.array([1, 2, 3, 4, 2, 1, 3, 2]).reshape((1, 2, 2, 2))
+  params = np.array([
+    1, 2, 3,
+    2, 3, 1,
+    3, 1, 2,
+
+    1, 1, 1,
+    2, 2, 2,
+    3, 3, 3,
+
+    2, 2, 2,
+    1, 1, 1,
+    3, 1, 1,
+
+    1, 1, 1,
+    1, 2, 1,
+    1, 3, 2,
+
+    2, 1, 1,
+    3, 1, 1,
+    1, 1, 1,
+
+    2, 2, 2,
+    1, 1, 1,
+    3, 3, 3,
+  ]).reshape((2, 3, 3, 3))
+
+  print(_output(batcha, params))
+
+
